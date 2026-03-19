@@ -25,6 +25,22 @@ async function ensurePredefinedAdmin() {
     throw new Error("ADMIN_EMAIL e ADMIN_PASSWORD precisam estar definidos no .env");
   }
 
+  // Ensure tables exist
+  try {
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "AdminUser" (
+        "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+        "email" text NOT NULL UNIQUE,
+        "passwordHash" text NOT NULL,
+        "passwordSalt" text NOT NULL,
+        "createdAt" datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+  } catch (error) {
+    console.log("AdminUser table already exists or error creating it:", error);
+  }
+
   const existingAdmin = await prisma.adminUser.findUnique({
     where: { email: adminEmail },
   });

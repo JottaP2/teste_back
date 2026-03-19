@@ -11,6 +11,23 @@ export async function salvarContato(selectedSubjects: string[], _prevState: unkn
   const subject = selectedSubjects.join(', ');
 
   try {
+    // Ensure ContactForms table exists
+    try {
+      await prisma.$executeRawUnsafe(`
+        CREATE TABLE IF NOT EXISTS "ContactForms" (
+          "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+          "name" text NOT NULL,
+          "email" text NOT NULL,
+          "telephone" text NOT NULL,
+          "enterprise" text NOT NULL,
+          "subject" text NOT NULL,
+          "message" text NOT NULL
+        )
+      `);
+    } catch (error) {
+      console.log("ContactForms table already exists or error creating it:", error);
+    }
+
     await prisma.contactForms.create({
       data: { name, email, message, enterprise, subject, telephone },
     });
