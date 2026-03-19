@@ -3,28 +3,18 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: site-rocketjr
-    ports:
-      - "3000:3000"
+    restart: unless-stopped
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=file:./prisma/dev.db
-      - NEXTAUTH_URL=http://localhost:3000
+      - DATABASE_URL=file:/app/data/dev.db
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-rocketfogueteelonmusk2023}
       - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@rocketjr.com}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-foguetinhos2023}
     volumes:
-      - site-rocketjr-data:/app/prisma
-    networks:
-      - site-rocketjr-network
-    restart: unless-stopped
-    stdin_open: true
-    tty: true
+      - site-rocketjr-data:/app/data
+    # A SEÇÃO 'PORTS' FOI REMOVIDA DAQUI
 
 volumes:
   site-rocketjr-data:
     driver: local
-
-networks:
-  site-rocketjr-network:
-    driver: bridge
