@@ -1,0 +1,17 @@
+{
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    },
+    "ignore": ["src/generated/**"]
+  },
+  "formatter": {
+    "enabled": true,
+    "ignore": ["src/generated/**"]
+  },
+  "organizeImports": {
+    "enabled": true,
+    "ignore": ["src/generated/**"]
+  }
+}
