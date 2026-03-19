@@ -1,5 +1,5 @@
 services:
-  app:
+  backform_frontback:  # Mude de 'app' para o nome exato que o Easypanel espera
     build:
       context: .
       dockerfile: Dockerfile
